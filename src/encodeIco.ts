@@ -28,8 +28,21 @@ export async function encodeIco(
   const initialImagePosition = FILE_HEADER_SIZE + IMAGE_HEADER_SIZE * inputs.length
 
   const { imagesHeader, imagesData } = await inputs.reduce(
-    async (data: Promise<IcoData>, input: InputImage) => {
-      return processInput(await data, input, initialImagePosition, limitImageDimension)
+    async (dataPromise: Promise<IcoData>, input: InputImage) => {
+      const data = await dataPromise
+
+      const imagePosition = data.imagesData.length + initialImagePosition
+
+      const { imageHeader, imageData } = await processInput(
+        input,
+        imagePosition,
+        limitImageDimension,
+      )
+
+      return {
+        imagesHeader: [...data.imagesHeader, ...imageHeader],
+        imagesData: [...data.imagesData, ...imageData],
+      }
     },
     Promise.resolve({ imagesHeader: [], imagesData: [] }),
   )
@@ -40,9 +53,8 @@ export async function encodeIco(
 }
 
 async function processInput(
-  data: IcoData,
   image: InputImage,
-  initialImagePosition: number,
+  imagePosition: number,
   limitImageDimension: boolean,
 ) {
   const buffer = await getArrayBuffer(image)
@@ -53,19 +65,14 @@ async function processInput(
     throw new Error('INVALID_SIZE')
   }
 
-  const imagePosition = data.imagesData.length + initialImagePosition
-
-  const imageHeader = await getImageHeader(width, height, buffer.byteLength, imagePosition, bpp)
+  const imageHeader = getImageHeader(width, height, buffer.byteLength, imagePosition, bpp)
 
   const imageData = new Uint8Array(buffer)
 
-  return {
-    imagesHeader: [...data.imagesHeader, ...imageHeader],
-    imagesData: [...data.imagesData, ...imageData],
-  }
+  return { imageHeader, imageData }
 }
 
-async function getImageHeader(
+function getImageHeader(
   width: number,
   height: number,
   size: number,
@@ -84,7 +91,7 @@ async function getImageHeader(
     numOfColoursInPalette,
     reservedByte,
     ...colourPlaneBytes,
-    ...(bpp ? splitNumberToBytes(bpp) : [0, 0]), // number of bits per pixel; common values are 1, 4, 8, or 32
+    ...(bpp ? splitNumberToBytes(bpp) : [0, 0]),
     ...splitNumberToBytes(size, 4),
     ...splitNumberToBytes(imagePosition, 4),
   ]
