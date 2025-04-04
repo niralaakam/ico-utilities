@@ -9,6 +9,7 @@ export type InputImage = ArrayBuffer | Blob
 export interface Dimensions {
   width: number
   height: number
+  bpp: number
 }
 
 export interface IcoData {
@@ -47,9 +48,9 @@ async function processInput(
   initialImagePosition: number,
   limitImageDimension: boolean,
 ) {
-  const blob = getBlob(image)
+  const buffer = await getArrayBuffer(image)
 
-  const { width, height } = await getImageDimensions(blob)
+  const { width, height, bpp } = parsePng(buffer)
 
   if (limitImageDimension && (width > MAX_IMAGE_DIMENSION || height > MAX_IMAGE_DIMENSION)) {
     throw new Error('INVALID_SIZE')
@@ -57,9 +58,9 @@ async function processInput(
 
   const imagePosition = data.imagesData.length + initialImagePosition
 
-  const imageHeader = await getImageHeader(width, height, blob.size, imagePosition)
+  const imageHeader = await getImageHeader(width, height, buffer.byteLength, imagePosition, bpp)
 
-  const imageData = new Uint8Array(await getArrayBuffer(image))
+  const imageData = new Uint8Array(buffer)
 
   return {
     imagesHeader: [...data.imagesHeader, ...imageHeader],
@@ -142,18 +143,6 @@ function isIhdrChunkValid(chunkBeginBytes: Uint8Array<ArrayBuffer>) {
   const ihdrChunkBeginBytes = [0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52]
 
   return ihdrChunkBeginBytes.toString() === chunkBeginBytes.toString()
-}
-
-function getImageDimensions(image: Blob) {
-  return new Promise<Dimensions>((resolve, reject) => {
-    const img = new Image()
-
-    img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight })
-
-    img.onerror = () => reject('INVALID_IMAGE')
-
-    img.src = URL.createObjectURL(image)
-  })
 }
 
 function splitNumberToBytes(num: number, bytes: number = 2): number[] {
