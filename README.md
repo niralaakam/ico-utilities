@@ -14,14 +14,15 @@ Install `ico-utils` using any of the command below
 ```
 import { encodeIco } from 'ico-utils'
 
-const imageOneBlob = await fetch('https://placehold.co/64/000000/FFFFFF/png?text=Image+From+Url').then(r => r.blob())
+const imageOneBlob = await fetch(
+  'https://placehold.co/64/000000/FFFFFF/png?text=Image+From+Url',
+).then((response) => response.blob())
 
-const imageTwoBuffer = await fetch('https://placehold.co/192/000000/FFFFFF/png?text=Image+From+Url').then(r => r.arrayBuffer())
+const imageTwoBuffer = await fetch(
+  'https://placehold.co/192/000000/FFFFFF/png?text=Image+From+Url',
+).then((response) => response.arrayBuffer())
 
-const icoBlob = await encodeIco([
-    imageOneBlob,
-    imageTwoBuffer,
-])
+const icoBlob = await encodeIco([imageOneBlob, imageTwoBuffer])
 
 const icoUrl = URL.createObjectURL(icoBlob)
 
