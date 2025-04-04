@@ -1,0 +1,29 @@
+{
+  "name": "ico-utils",
+  "version": "0.1.0",
+  "description": "A javascript library to create ICO file from PNG images.",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "keywords": [
+    "png-to-ico",
+    "ico-encoder",
+    "ico-generator",
+    "ico",
+    "icon",
+    "favicon",
+    "no-dependency",
+    "pure-js"
+  ],
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "author": "Mhmdaz <dev@niralaakam.com> (https://niralaakam.com)",
+  "license": "LGPL-3.0",
+  "private": false,
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  }
+}
