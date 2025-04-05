@@ -12,16 +12,16 @@ export function parsePng(buffer: ArrayBuffer) {
   const uint8 = new Uint8Array(buffer.slice(0, 33))
 
   if (!isPngSignatureValid(uint8.slice(0, 8))) {
-    throw new Error('INVALID_IMAGE')
+    throw new Error('INVALID_PNG_IMAGE')
   }
 
   if (!isIhdrChunkValid(uint8.slice(8, 16))) {
-    throw new Error('INVALID_IMAGE')
+    throw new Error('INVALID_PNG_IMAGE')
   }
 
-  const width = joinBytesToNumber(Array.from(uint8.slice(16, 20)))
+  const width = joinBytesToNumber(Array.from(uint8.slice(16, 20).reverse()))
 
-  const height = joinBytesToNumber(Array.from(uint8.slice(20, 24)))
+  const height = joinBytesToNumber(Array.from(uint8.slice(20, 24).reverse()))
 
   const bitsPerChannel = uint8[24]
 

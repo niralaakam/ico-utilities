@@ -7,9 +7,9 @@ export function splitNumberToBytes(num: number, bytes: number = 2): number[] {
 }
 
 export function joinBytesToNumber(bytes: number[]): number {
-  if (bytes.length == 1) {
-    return bytes.shift() ?? 0
+  if (bytes.length <= 1) {
+    return bytes.pop() ?? 0
   }
 
-  return ((bytes.shift() ?? 0) << (8 * bytes.length)) + joinBytesToNumber(bytes)
+  return ((bytes.pop() ?? 0) << (8 * bytes.length)) + joinBytesToNumber(bytes)
 }
