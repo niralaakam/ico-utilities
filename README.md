@@ -1,6 +1,6 @@
-# ICO
+# ICO Utils
 
-A javascript library to create ICO file from PNG images.
+A javascript library to create ICO file from PNG images and extract PNG images from ICO file.
 
 ## Installation
 
