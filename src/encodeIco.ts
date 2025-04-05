@@ -1,5 +1,6 @@
 import { parsePng } from './png-utils'
-import { splitNumberToBytes } from './bytesConverter'
+import { getBlob, getArrayBuffer } from './helpers/binaryConverter'
+import { splitNumberToBytes } from './helpers/bytesConverter'
 import { InputImage } from './types'
 
 const MAX_FILES = 65536
@@ -94,12 +95,4 @@ function getImageHeader(
     ...splitNumberToBytes(size, 4),
     ...splitNumberToBytes(imagePosition, 4),
   ]
-}
-
-function getBlob(image: InputImage, mime = 'image/png') {
-  return image instanceof Blob ? image : new Blob([image], { type: mime })
-}
-
-async function getArrayBuffer(image: InputImage) {
-  return image instanceof ArrayBuffer ? image : await image.arrayBuffer()
 }
