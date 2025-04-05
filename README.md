@@ -11,6 +11,8 @@ Install `ico-utils` using any of the command below
 
 ## Usage
 
+To create ICO file using PNG images:
+
 ```
 import { encodeIco } from 'ico-utils'
 
@@ -27,4 +29,35 @@ const icoBlob = await encodeIco([imageOneBlob, imageTwoBuffer])
 const icoUrl = URL.createObjectURL(icoBlob)
 
 console.log(icoUrl)
+```
+
+To extract PNG images from an ICO file:
+
+```
+import { decodeIco } from 'ico-utils'
+
+const icoImage = getIcoImage() // Ico file as ArrayBuffer or Blob
+
+const pngImages = await decodeIco(icoImage)
+
+console.log(pngImages)
+```
+
+The above code will log the details into console as follows:
+
+```
+[
+    {
+        "width": 16,
+        "height": 16,
+        "bpp": 32,
+        "blob": Blob {size: 688, type: 'image/png'}
+    },
+    {
+        "width": 32,
+        "height": 32,
+        "bpp": 32,
+        "blob": Blob {size: 1386, type: 'image/png'}
+    }
+]
 ```
