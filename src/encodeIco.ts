@@ -1,13 +1,12 @@
 import { parsePng } from './png-utils'
 import { splitNumberToBytes } from './bytesConverter'
+import { InputImage } from './types'
 
 const MAX_FILES = 65536
 const MAX_IMAGE_DIMENSION = 256
 
 const FILE_HEADER_SIZE = 6
 const IMAGE_HEADER_SIZE = 16
-
-export type InputImage = ArrayBuffer | Blob
 
 interface IcoData {
   imagesHeader: number[]

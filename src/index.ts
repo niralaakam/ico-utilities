@@ -1,2 +1,2 @@
-export type { InputImage } from './encodeIco'
+export type { InputImage } from './types'
 export { encodeIco } from './encodeIco'
