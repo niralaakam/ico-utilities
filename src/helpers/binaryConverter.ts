@@ -1,4 +1,4 @@
-import { InputImage } from '../types'
+import { InputImage } from '../types.js'
 
 export function getBlob(image: InputImage, mime = 'image/png') {
   return image instanceof Blob ? image : new Blob([image], { type: mime })

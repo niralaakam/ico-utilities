@@ -1,7 +1,7 @@
-import { parsePng } from './png-utils'
-import { getBlob, getArrayBuffer } from './helpers/binaryConverter'
-import { joinBytesToNumber } from './helpers/bytesConverter'
-import { InputImage } from './types'
+import { parsePng } from './png-utils.js'
+import { getBlob, getArrayBuffer } from './helpers/binaryConverter.js'
+import { joinBytesToNumber } from './helpers/bytesConverter.js'
+import { InputImage } from './types.js'
 
 const FILE_HEADER_SIZE = 6
 const IMAGE_HEADER_SIZE = 16

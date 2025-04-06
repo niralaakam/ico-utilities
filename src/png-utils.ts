@@ -1,4 +1,4 @@
-import { joinBytesToNumber } from './helpers/bytesConverter'
+import { joinBytesToNumber } from './helpers/bytesConverter.js'
 
 const CHANNELS_PER_PIXEL: { [index: number]: number } = {
   0: 1,

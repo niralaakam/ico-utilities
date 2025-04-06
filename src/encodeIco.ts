@@ -1,7 +1,7 @@
-import { parsePng } from './png-utils'
-import { getBlob, getArrayBuffer } from './helpers/binaryConverter'
-import { splitNumberToBytes } from './helpers/bytesConverter'
-import { InputImage } from './types'
+import { parsePng } from './png-utils.js'
+import { getBlob, getArrayBuffer } from './helpers/binaryConverter.js'
+import { splitNumberToBytes } from './helpers/bytesConverter.js'
+import { InputImage } from './types.js'
 
 const MAX_FILES = 65536
 const MAX_IMAGE_DIMENSION = 256
