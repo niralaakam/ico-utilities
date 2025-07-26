@@ -32,13 +32,13 @@ export function parsePng(buffer: ArrayBuffer) {
   return { width, height, bpp: bitsPerPixel }
 }
 
-function isPngSignatureValid(imageSignatureBytes: Uint8Array<ArrayBuffer>) {
+export function isPngSignatureValid(imageSignatureBytes: Uint8Array<ArrayBuffer>) {
   const pngSignatureBytes = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
 
   return pngSignatureBytes.toString() === imageSignatureBytes.toString()
 }
 
-function isIhdrChunkValid(chunkBeginBytes: Uint8Array<ArrayBuffer>) {
+export function isIhdrChunkValid(chunkBeginBytes: Uint8Array<ArrayBuffer>) {
   const ihdrChunkBeginBytes = [0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52]
 
   return ihdrChunkBeginBytes.toString() === chunkBeginBytes.toString()

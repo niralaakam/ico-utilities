@@ -1,4 +1,4 @@
-import { parsePng } from './png-utils.js'
+import { isPngSignatureValid, parsePng } from './png-utils.js'
 import { getBlob, getArrayBuffer } from './helpers/binaryConverter.js'
 import { joinBytesToNumber } from './helpers/bytesConverter.js'
 import { InputImage } from './types.js'
@@ -10,6 +10,10 @@ export async function decodeIco(icoImage: InputImage) {
   const buffer = await getArrayBuffer(icoImage)
 
   const uint8 = new Uint8Array(buffer)
+
+  if (isPngSignatureValid(uint8.slice(0, 8))) {
+    return [getParsedPngAndBlob(uint8)]
+  }
 
   if (!isIcoSignatureValid(uint8.slice(0, 4))) {
     throw new Error('INVALID_ICO_IMAGE')
@@ -26,10 +30,7 @@ export async function decodeIco(icoImage: InputImage) {
   const images = imagesDetails.map((imageDetails) => {
     const imageUint8 = uint8.slice(imageDetails.position, imageDetails.position + imageDetails.size)
 
-    return {
-      ...parsePng(imageUint8),
-      blob: getBlob(imageUint8),
-    }
+    return getParsedPngAndBlob(imageUint8)
   })
 
   return images
@@ -53,4 +54,11 @@ function isIcoSignatureValid(imageSignatureBytes: Uint8Array<ArrayBuffer>) {
   const icoSignatureBytes = [0x00, 0x00, 0x01, 0x00]
 
   return icoSignatureBytes.toString() === imageSignatureBytes.toString()
+}
+
+function getParsedPngAndBlob(uint8: Uint8Array<ArrayBuffer>) {
+  return {
+    ...parsePng(uint8),
+    blob: getBlob(uint8),
+  }
 }
